@@ -60,19 +60,17 @@ class ORCSpider(scrapy.Spider):
             if dept in self.course_list:
                 self.course_list[dept].append(
                     {
-                        class_number: {
-                            "course_name": course_name,
-                            "course_link": self.BASEORC + course.xpath("@href").get(),
-                        }
+                        "code": class_number,
+                        "course_name": course_name,
+                        "course_link": self.BASEORC + course.xpath("@href").get(),
                     }
                 )
             else:
                 self.course_list[dept] = [
                     {
-                        class_number: {
-                            "course_name": course_name,
-                            "course_link": self.BASEORC + course.xpath("@href").get(),
-                        }
+                        "code": class_number,
+                        "course_name": course_name,
+                        "course_link": self.BASEORC + course.xpath("@href").get(),
                     }
                 ]
 

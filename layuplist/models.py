@@ -14,7 +14,7 @@ class Department(models.Model):
 
 class Course(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    code = models.FloatField()
+    code = models.CharField(max_length=40)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     disribs = models.JSONField(blank=True, null=True)
