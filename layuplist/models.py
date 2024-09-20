@@ -7,18 +7,25 @@ class Department(models.Model):
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    url = models.URLField(max_length=400, null=True)
+
+    class Meta:
+        ordering = ["short_name"]
 
     def __str__(self):
         return self.short_name
 
+    def course_count(self):
+        return self.courses.count()
+
 
 class Course(models.Model):
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, related_name="courses", on_delete=models.CASCADE)
     code = models.CharField(max_length=40)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    disribs = models.JSONField(blank=True, null=True)
-    url = models.URLField(max_length=200)
+    distribs = models.JSONField(blank=True, null=True)
+    url = models.URLField(max_length=400)
     rating = models.FloatField(blank=True, null=True)
     layup = models.FloatField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,11 +35,15 @@ class Course(models.Model):
         return self.department.short_name + " " + str(self.code)
 
 
+class Professor(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class Review(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="reviews")
     content = models.TextField()
     term = models.CharField(max_length=3)
-    professor = models.CharField(max_length=100)
+    professor = models.ForeignKey(Professor, related_name="reviews", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
