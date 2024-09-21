@@ -1,4 +1,18 @@
+""" Models for the layuplist app """
+
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+
+class Student(AbstractUser):
+    """Custom User model for students"""
+
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.username + " " + self.email
+
 
 # Create your models here.
 class Department(models.Model):
@@ -20,7 +34,9 @@ class Department(models.Model):
 
 
 class Course(models.Model):
-    department = models.ForeignKey(Department, related_name="courses", on_delete=models.CASCADE)
+    department = models.ForeignKey(
+        Department, related_name="courses", on_delete=models.CASCADE
+    )
     code = models.CharField(max_length=40)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -43,9 +59,19 @@ class Review(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="reviews")
     content = models.TextField()
     term = models.CharField(max_length=3)
-    professor = models.ForeignKey(Professor, related_name="reviews", on_delete=models.CASCADE)
+    professor = models.ForeignKey(
+        Professor, related_name="reviews", on_delete=models.CASCADE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.course.department.short_name + " " + str(self.course.code) + " " + str(self.rating) + " " + str(self.layup)
+        return (
+            self.course.department.short_name
+            + " "
+            + str(self.course.code)
+            + " "
+            + str(self.rating)
+            + " "
+            + str(self.layup)
+        )

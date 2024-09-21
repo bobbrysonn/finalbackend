@@ -1,6 +1,7 @@
-from django.urls import include, path
+""" URL Configuration for the layuplist app. """
+
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, DepartmentViewSet, CourseViewSet
+from .views import DepartmentViewSet, CourseViewSet
 
 router = DefaultRouter()
 router.register(r"departments", DepartmentViewSet)
