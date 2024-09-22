@@ -92,6 +92,7 @@ DJOSER = {
     "ACTIVATION_URL": "auth/activation/{uid}/{token}",
     "EMAIL_FRONTEND_DOMAIN": "basedreviews.info",
     "EMAIL_FRONTEND_PROTOCOL": "https",
+    "EMAIL_FRONTEND_SITE_NAME": "Based Reviews",
     "EMAIL": {
         "activation": "layuplist.email.CustomActivationEmail",
     },
