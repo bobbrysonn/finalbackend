@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -67,7 +68,7 @@ ROOT_URLCONF = "finalbackend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -88,7 +89,12 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    "ACTIVATION_URL": "http://localhost:3000/auth/activation/{uid}/{token}",
+    "ACTIVATION_URL": "auth/activation/{uid}/{token}",
+    "EMAIL_FRONTEND_DOMAIN": "basedreviews.info",
+    "EMAIL_FRONTEND_PROTOCOL": "https",
+    "EMAIL": {
+        "activation": "layuplist.email.CustomActivationEmail",
+    },
     "LOGIN_FIELD": "email",
     "USERNAME_RESET_CONFIRM_URL": "auth/reset/confirm/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",
