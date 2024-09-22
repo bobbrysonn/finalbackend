@@ -88,7 +88,7 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    "ACTIVATION_URL": "auth/activation/{uid}/{token}",
+    "ACTIVATION_URL": "http://localhost:3000/auth/activation/{uid}/{token}",
     "USERNAME_RESET_CONFIRM_URL": "auth/reset/confirm/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
