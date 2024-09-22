@@ -7,8 +7,14 @@ from django.db import models
 class Student(AbstractUser):
     """Custom user model for students"""
 
-    email = models.EmailField("email_address", unique=True)
+    email = models.EmailField(unique=True)
     graduation_year = models.IntegerField(null=True, blank=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
+
+    def __str__(self):
+        return self.email
 
 
 # Create your models here.
