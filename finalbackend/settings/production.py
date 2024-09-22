@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
+    "SECRET_KEY",
     default=secrets.token_urlsafe(nbytes=64),
 )
 
@@ -96,7 +96,12 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    "ACTIVATION_URL": "http://localhost:3000/auth/activation/{uid}/{token}",
+    "ACTIVATION_URL": "auth/activation/{uid}/{token}",
+    "EMAIL_FRONTEND_DOMAIN": "basedreviews.info",
+    "EMAIL_FRONTEND_PROTOCOL": "https",
+    "EMAIL": {
+        "activation": "layuplist.email.CustomActivationEmail",
+    },
     "LOGIN_FIELD": "email",
     "USERNAME_RESET_CONFIRM_URL": "auth/reset/confirm/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",

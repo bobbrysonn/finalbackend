@@ -98,7 +98,10 @@ DJOSER = {
     "LOGIN_FIELD": "email",
     "USERNAME_RESET_CONFIRM_URL": "auth/reset/confirm/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
     "SEND_ACTIVATION_EMAIL": True,
+    "SEND_CONFIRMATION_EMAIL": True,
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
