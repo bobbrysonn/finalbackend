@@ -1,1 +1,1 @@
-web: gunicorn finalbackend.wsgi
+web: gunicorn finalbackend.wsgi --log-file -
