@@ -20,6 +20,7 @@ class ORCSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response, **kwargs):
+        """Parse the main page for departments"""
         courses = []
 
         for department in response.xpath("//div[@id='sc-programlinks']/ul/li/p/a"):

@@ -47,8 +47,8 @@ class Course(models.Model):
     description = models.TextField(blank=True, null=True)
     distribs = models.JSONField(blank=True, null=True)
     url = models.URLField(max_length=400)
-    rating = models.FloatField(blank=True, null=True)
-    layup = models.FloatField(blank=True, null=True)
+    rating = models.FloatField(default=0)
+    layup = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -35,10 +35,28 @@ class CourseSerializer(serializers.ModelSerializer):
 class DepartmentSerializer(serializers.ModelSerializer):
     """Serializer for the Department model."""
 
-    courses = CourseSerializer(many=True)
-
     class Meta:
         """Metadata for the DepartmentSerializer."""
+
+        model = Department
+        fields = [
+            "id",
+            "short_name",
+            "long_name",
+            "description",
+            "course_count",
+            "url",
+        ]
+        read_only_fields = ("course_count",)
+
+
+class DepartmentCourseSerializer(serializers.ModelSerializer):
+    """Serializer for the Department model with courses."""
+
+    courses = CourseSerializer(many=True, read_only=True)
+
+    class Meta:
+        """Metadata for the DepartmentCourseSerializer."""
 
         model = Department
         fields = [
