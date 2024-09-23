@@ -112,6 +112,7 @@ DJOSER = {
     "SEND_CONFIRMATION_EMAIL": True,
 }
 
+DEFAULT_FROM_EMAIL = "noreply@basedreviews.info"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
