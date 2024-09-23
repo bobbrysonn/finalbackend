@@ -42,8 +42,8 @@ class Course(models.Model):
     department = models.ForeignKey(
         Department, related_name="courses", on_delete=models.CASCADE
     )
-    code = models.CharField(max_length=40)
-    title = models.CharField(max_length=100)
+    code = models.CharField(max_length=400)
+    title = models.CharField(max_length=400)
     description = models.TextField(blank=True, null=True)
     distribs = models.JSONField(blank=True, null=True)
     url = models.URLField(max_length=400)
