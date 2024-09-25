@@ -6,6 +6,7 @@ from .views import (
     DepartmentViewSet,
     CourseViewSet,
     CourseViewByDepartment,
+    CourseViewByName,
     ReviewViewSet,
 )
 
@@ -21,4 +22,9 @@ urlpatterns = router.urls + [
         CourseViewByDepartment.as_view(),
         name="courses-by-department",
     ),
+    path(
+        "findcourse/<str:course_name>/",
+        CourseViewByName.as_view(),
+        name="course-by-name",
+    )
 ]
