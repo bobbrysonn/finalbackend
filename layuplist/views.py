@@ -41,6 +41,10 @@ class CourseViewByDepartment(generics.ListAPIView):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
 
+    def get_queryset(self):
+        department = self.kwargs["department_short_name"]
+        return Course.objects.filter(title__istartswith=department)
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
