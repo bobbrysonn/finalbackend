@@ -5,7 +5,6 @@ from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from .models import Course, Department, Review, Professor
 from .serializers import (
-    UserSerializer,
     DepartmentSerializer,
     CourseSerializer,
     MyTokenObtainPairSerializer,
@@ -15,18 +14,11 @@ from .serializers import (
 User = get_user_model()
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-
-class CourseViewByName(viewsets.ModelViewSet):
+class CourseViewByName(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
