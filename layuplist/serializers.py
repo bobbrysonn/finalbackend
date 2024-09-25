@@ -1,18 +1,7 @@
-from django.contrib.auth.models import User
-from django.db import transaction
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Course, Department, Review, Professor
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-
-class UserSerializer(serializers.ModelSerializer):
-    """Serializer for the User model."""
-
-    class Meta:
-        """Metadata for the UserSerializer."""
-
-        model = User
-        fields = ["id", "username"]
 
 
 class CourseSerializer(serializers.ModelSerializer):
