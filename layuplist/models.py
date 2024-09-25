@@ -58,25 +58,29 @@ class Course(models.Model):
 
 class Professor(models.Model):
     name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    avg_rating = models.FloatField(default=0)
+
+    def __str(self):
+        return self.name
 
 
 class Review(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="reviews")
     content = models.TextField()
+    layup = models.BooleanField(default=False)
+    median = models.CharField(max_length=3)
     term = models.CharField(max_length=3)
     professor = models.ForeignKey(
-        Professor, related_name="reviews", on_delete=models.CASCADE
+        Professor, related_name="professors", on_delete=models.CASCADE
+    )
+    professor_rating = models.FloatField(default=0)
+    course_rating = models.FloatField(default=0)
+    student = models.ForeignKey(
+        Student, related_name="students", on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (
-            self.course.department.short_name
-            + " "
-            + str(self.course.code)
-            + " "
-            + str(self.rating)
-            + " "
-            + str(self.layup)
-        )
+        return str(self.professor.email)

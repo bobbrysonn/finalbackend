@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
+from django.db import transaction
 from rest_framework import serializers
-from .models import Course, Department
+from .models import Course, Department, Review, Professor
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -23,6 +24,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = [
             "id",
+            "code",
             "description",
             "distribs",
             "title",
@@ -69,6 +71,39 @@ class DepartmentCourseSerializer(serializers.ModelSerializer):
             "courses",
         ]
         read_only_fields = ("course_count",)
+
+
+class ProfessorSerializer(serializers.ModelSerializer):
+    """Serializer for the Professor model."""
+
+    class Meta:
+        """Metadata for the ProfessorSerializer."""
+
+        model = Professor
+        fields = ["id", "name", "email", "avg_rating"]
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    """Serializer for the Review model."""
+    professor_name = serializers.ReadOnlyField(source="professor.name", read_only=True)
+
+    class Meta:
+        """Metadata for the ReviewSerializer."""
+
+        model = Review
+        fields = [
+            "id",
+            "content",
+            "course",
+            "course_rating",
+            "layup",
+            "term",
+            "professor",
+            "professor_name",
+            "professor_rating",
+            "median",
+            "student",
+        ]
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
