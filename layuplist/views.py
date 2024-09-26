@@ -68,7 +68,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
         course.save()
 
         # Create prof object and store id in request
-        prof, _ = Professor.objects.get_or_create(name=prof_name, email=prof_email)
+        prof, _ = Professor.objects.get_or_create(email=prof_email)
+        prof.name = prof_name
         request.data["professor"] = prof.id
 
         serializer = self.get_serializer(data=request.data)
