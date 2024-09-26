@@ -27,7 +27,9 @@ SECRET_KEY = "django-insecure-*8(99kzw*)&wq+a4esisol4jaodeq_*i(7v+ile8vj#)uwy3i9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "*"
+]
 
 AUTH_USER_MODEL = "layuplist.Student"
 

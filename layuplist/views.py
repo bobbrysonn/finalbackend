@@ -77,6 +77,20 @@ class ReviewViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    def retrieve(self, request, *args, **kwargs):
+        course = kwargs.get("pk")
+
+        queryset = Review.objects.filter(course=course)
+
+        if not queryset.exists():
+            return Response(
+                [],
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     queryset = Department.objects.all()
