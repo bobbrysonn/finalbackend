@@ -2,6 +2,7 @@
 
 from html import unescape
 from json import dumps
+from scrapy import signals
 import scrapy
 
 
@@ -11,6 +12,16 @@ class ORCSpider(scrapy.Spider):
     name = "orc"
     BASEORC = "https://dartmouth.smartcatalogiq.com"
     course_list = {}
+
+    @classmethod
+    def from_crawler(cls, crawler, *args, **kwargs):
+        spider = super(ORCSpider, cls).from_crawler(crawler, *args, **kwargs)
+        crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
+        return spider
+
+    def spider_closed(self):
+        with open("full_courses.json", "w", encoding="utf-8") as file:
+            file.write(dumps(self.course_list))
 
     def start_requests(self):
         urls = [
@@ -58,22 +69,38 @@ class ORCSpider(scrapy.Spider):
 
             dept, class_number, *_ = course_name.split(" ")
 
-            if dept in self.course_list:
-                self.course_list[dept].append(
-                    {
-                        "code": class_number,
-                        "course_name": course_name,
-                        "course_link": self.BASEORC + course.xpath("@href").get(),
-                    }
-                )
-            else:
-                self.course_list[dept] = [
-                    {
-                        "code": class_number,
-                        "course_name": course_name,
-                        "course_link": self.BASEORC + course.xpath("@href").get(),
-                    }
-                ]
+            yield response.follow(
+                self.BASEORC + course.xpath("@href").get(),
+                callback=self.parse_description,
+                cb_kwargs={
+                    "code": class_number,
+                    "name": course_name,
+                    "link": self.BASEORC + course.xpath("@href").get(),
+                    "dept": dept,
+                },
+            )
 
-        with open("full_courses.json", "w", encoding="utf-8") as file:
-            file.write(dumps(self.course_list))
+    def parse_description(self, response, code, name, link, dept):
+        """Parse the course description"""
+
+        desc = (
+            "".join(response.xpath("//div[@class='desc']//text()").getall())
+            .replace("\xa0", " ")
+            .replace("\r\n", " ")
+            .replace("\t", " ")
+            .strip()
+        )
+
+        if dept in self.course_list:
+            self.course_list[dept].append(
+                {"code": code, "course_name": name, "course_link": link, "desc": desc}
+            )
+        else:
+            self.course_list[dept] = [
+                {
+                    "code": code,
+                    "course_name": name,
+                    "course_link": link,
+                    "desc": desc,
+                }
+            ]
