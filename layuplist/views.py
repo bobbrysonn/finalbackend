@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.http import QueryDict
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, permissions, status, viewsets
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from .models import Course, Department, Review, Professor
 from .serializers import (
@@ -18,6 +19,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+
 class CourseViewByName(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -32,6 +34,9 @@ class CourseViewByDepartment(generics.ListAPIView):
 
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    filter_backends = [OrderingFilter]
+    ordering_fields = ["number"]
+    ordering = ["number"]
 
     def get_queryset(self):
         department = self.kwargs["department_short_name"]
@@ -52,11 +57,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
         request.data["student"] = User.objects.get(email=request.data.get("student")).id
 
         # Get prof name and email
-        prof_name = " ".join(request.data.get("professor").split("@")[0].split(".")).title()
+        prof_name = " ".join(
+            request.data.get("professor").split("@")[0].split(".")
+        ).title()
         prof_email = request.data.get("professor")
 
         # Get Course and store id in request
-        course = Course.objects.filter(title__startswith=request.data.get("course")).first()
+        course = Course.objects.filter(
+            title__startswith=request.data.get("course")
+        ).first()
         request.data["course"] = course.id
 
         # Check if review is a layup and subtract or add
@@ -70,13 +79,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
         # Create prof object and store id in request
         prof, _ = Professor.objects.get_or_create(email=prof_email)
         prof.name = prof_name
+        prof.save()
         request.data["professor"] = prof.id
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     def retrieve(self, request, *args, **kwargs):
         course = kwargs.get("pk")
