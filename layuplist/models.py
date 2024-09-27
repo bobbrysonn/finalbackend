@@ -46,6 +46,7 @@ class Course(models.Model):
     title = models.CharField(max_length=400)
     description = models.TextField(blank=True, null=True)
     distribs = models.JSONField(blank=True, null=True)
+    number = models.FloatField(blank=True, null=True)
     url = models.URLField(max_length=400)
     rating = models.FloatField(default=0)
     layup = models.FloatField(default=0)
@@ -61,7 +62,7 @@ class Professor(models.Model):
     email = models.EmailField(unique=True)
     avg_rating = models.FloatField(default=0)
 
-    def __str(self):
+    def __str__(self):
         return self.name
 
 
