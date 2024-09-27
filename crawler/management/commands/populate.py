@@ -97,11 +97,12 @@ class Command(BaseCommand):
                     d.save()
 
                 for course in courses_list[dept]:
-                    Course.objects.get_or_create(
+                    c, _ = Course.objects.get_or_create(
                         code=str(course["code"]),
-                        title=course["course_name"],
                         department=d,
+                        title=course["course_name"],
                         url=course["course_link"],
-                        layup=0.0,
-                        rating=0.0,
                     )
+                    c.description = course["desc"]
+                    c.number = float(course["code"].split("-")[0])
+                    c.save()
