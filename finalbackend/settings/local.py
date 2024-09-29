@@ -27,9 +27,7 @@ SECRET_KEY = "django-insecure-*8(99kzw*)&wq+a4esisol4jaodeq_*i(7v+ile8vj#)uwy3i9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "*"
-]
+ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = "layuplist.Student"
 
@@ -99,8 +97,8 @@ DJOSER = {
         "activation": "layuplist.email.CustomActivationEmail",
     },
     "LOGIN_FIELD": "email",
-    "USERNAME_RESET_CONFIRM_URL": "auth/reset/confirm/{uid}/{token}",
-    "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "auth/reset/username/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/reset/password/{uid}/{token}",
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
     "SEND_ACTIVATION_EMAIL": True,
