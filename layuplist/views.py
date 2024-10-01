@@ -23,6 +23,8 @@ class CourseViewSet(viewsets.ModelViewSet):
 class CourseViewByName(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    ordering_fields = ["number"]
+    ordering = ["number"]
 
     def get_queryset(self):
         course_name = self.kwargs["course_name"]
