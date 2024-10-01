@@ -23,6 +23,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 class CourseViewByName(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    filter_backends = [OrderingFilter]
     ordering_fields = ["number"]
     ordering = ["number"]
 
