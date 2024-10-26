@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.http import QueryDict
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import generics, permissions, status, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from .models import Course, Department, Review, Professor
@@ -12,12 +12,28 @@ from .serializers import (
     ReviewSerializer,
 )
 
+# Get the current user model
+# Advisable to do it this way
 User = get_user_model()
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    filter_backends = [OrderingFilter]
+    ordering_fields = ["number"]
+    ordering = ["number"]
+
+    def get_queryset(self):
+        """
+        Optionally restricts the courses based on the presence
+        of the `title` keyword argument
+        """
+        title = self.request.query_params.get("title")
+        if title is not None:
+            return Course.objects.filter(title__icontains=title)
+        else:
+            return Course.objects.all()
 
 
 class CourseViewByName(generics.ListAPIView):
