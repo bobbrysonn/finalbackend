@@ -18,6 +18,11 @@ User = get_user_model()
 
 
 class CourseViewSet(viewsets.ModelViewSet):
+    """Viewset for the Course model
+
+    Overrides `get_queryset` to allows filtering courses based on title and department
+    """
+
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     filter_backends = [OrderingFilter]
@@ -38,18 +43,6 @@ class CourseViewSet(viewsets.ModelViewSet):
             return Course.objects.filter(title__istartswith=dept)
         else:
             return Course.objects.all()
-
-
-class CourseViewByName(generics.ListAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    filter_backends = [OrderingFilter]
-    ordering_fields = ["number"]
-    ordering = ["number"]
-
-    def get_queryset(self):
-        course_name = self.kwargs["course_name"]
-        return Course.objects.filter(title__icontains=course_name)
 
 
 class CourseViewByDepartment(generics.ListAPIView):
