@@ -30,8 +30,12 @@ class CourseViewSet(viewsets.ModelViewSet):
         of the `title` keyword argument
         """
         title = self.request.query_params.get("title")
+        dept = self.request.query_params.get("dept")
+
         if title is not None:
             return Course.objects.filter(title__icontains=title)
+        elif dept is not None:
+            return Course.objects.filter(title__istartswith=dept)
         else:
             return Course.objects.all()
 
