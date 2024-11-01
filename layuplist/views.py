@@ -45,20 +45,6 @@ class CourseViewSet(viewsets.ModelViewSet):
             return Course.objects.all()
 
 
-class CourseViewByDepartment(generics.ListAPIView):
-    """ViewSet for listing courses by department."""
-
-    serializer_class = CourseSerializer
-    queryset = Course.objects.all()
-    filter_backends = [OrderingFilter]
-    ordering_fields = ["number"]
-    ordering = ["number"]
-
-    def get_queryset(self):
-        department = self.kwargs["department_short_name"]
-        return Course.objects.filter(title__istartswith=department)
-
-
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
