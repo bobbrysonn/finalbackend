@@ -11,3 +11,5 @@ router = DefaultRouter()
 router.register(r"departments", DepartmentViewSet)
 router.register(r"courses", CourseViewSet)
 router.register(r"reviews", ReviewViewSet)
+
+urlpatterns = router.urls
