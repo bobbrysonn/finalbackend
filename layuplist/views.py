@@ -32,17 +32,41 @@ class CourseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """
         Optionally restricts the courses based on the presence
-        of the `title` keyword argument
+        of the `title`, `dept`, `layup`, `best` keyword argument
+
+        If layup or best is true, it returns the top 20 courses with most layups
+        or best ratings respectively
         """
         title = self.request.query_params.get("title")
         dept = self.request.query_params.get("dept")
+        layup = self.request.query_params.get("layup")
+        best = self.request.query_params.get("best")
 
         if title is not None:
             return Course.objects.filter(title__icontains=title)
         elif dept is not None:
             return Course.objects.filter(title__istartswith=dept)
+        elif layup is not None:
+            # Remove filtering
+            self.remove_filtering()
+
+            return Course.objects.raw(
+                "SELECT * FROM layuplist_course ORDER BY layup DESC LIMIT %s" % layup
+            )
+        elif best is not None:
+            # Remove filtering
+            self.remove_filtering()
+
+            return Course.objects.raw(
+                "SELECT * FROM layuplist_course ORDER BY rating DESC LIMIT %s" % best
+            )
         else:
             return Course.objects.all()
+
+    def remove_filtering(self):
+        self.filter_backends = []
+        self.ordering_fields = []
+        self.ordering = []
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
