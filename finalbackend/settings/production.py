@@ -100,7 +100,6 @@ DJOSER = {
     "EMAIL": {
         "activation": "layuplist.email.CustomActivationEmail",
     },
-    "LOGIN_FIELD": "email",
     "USERNAME_RESET_CONFIRM_URL": "auth/reset/username/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL": "auth/reset/password/{uid}/{token}",
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,

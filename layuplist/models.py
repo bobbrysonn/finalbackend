@@ -10,8 +10,7 @@ class Student(AbstractUser):
     email = models.EmailField(unique=True)
     graduation_year = models.IntegerField(null=True, blank=True)
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = ["email"]
 
     def __str__(self):
         return self.email
